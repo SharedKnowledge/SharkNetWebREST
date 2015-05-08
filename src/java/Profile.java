@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 
 import toolbox.*;
 
@@ -24,9 +25,17 @@ public class Profile extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            JSON jsonObject = new JSON("contextPath", request.getContextPath());
-
-            out.println(jsonObject.toJSONString());
+            
+            // Basic infos
+            JSON profile = new JSON("name", "Test Name");
+            profile.add("age", 27);
+    
+            // Links
+            JSON links = new JSON("twitter", "http://www.twitter.com/testname");
+            links.add("website", "http://www.testname.de");
+            profile.add("links", links.getBody());
+            
+            out.println(profile.toJSONString());
         }
     }
 

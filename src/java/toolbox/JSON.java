@@ -11,7 +11,15 @@ public class JSON {
        body.put(key, value);
     }
     
+    public void add(String key, Object value) {
+        body.put(key, value);
+    }
+    
     public String toJSONString() {
-        return new JSONObject(body).toString();
+        return getBody().toString();
+    }
+    
+    public JSONObject getBody() {
+        return new JSONObject(body);
     }
 }
