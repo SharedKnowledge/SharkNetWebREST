@@ -5,7 +5,7 @@ import net.sharkfw.apps.sharknet.SharkNetException;
 import net.sharkfw.apps.sharknet.j2se_android.SharkNetEngine;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
-import toolbox.JSONHelper;
+import helper.JSONHelper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
