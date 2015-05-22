@@ -18,8 +18,8 @@ public class JSONHelper {
     }
     
     public JSONHelper(String key, Object value) {
-       this();
-       body.put(key, value);
+        this();
+        body.put(key, value);
     }
     
     public void render(HttpServletResponse response, SharkNetPeerProfile peerProfile) throws SharkKBException, IOException {
