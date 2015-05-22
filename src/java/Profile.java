@@ -11,7 +11,7 @@ import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
 
-@WebServlet(urlPatterns = {"/profile"})
+@WebServlet(urlPatterns = {"/profile/*"})
 public class Profile extends APIEndpoint {
 
     public Profile() throws SharkKBException, SharkNetException, SharkSecurityException { }
