@@ -14,7 +14,6 @@ import net.sharkfw.apps.sharknet.j2se_android.SharkNetEngine;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
-import org.json.JSONObject;
 
 import toolbox.*;
 
@@ -22,11 +21,11 @@ import toolbox.*;
 public class Profile extends HttpServlet {
     
     private final SharkNet sharkNet;
-    private final JSON jsonHelper;
+    private final JSONHelper jsonHelper;
     
     public Profile() throws SharkKBException, SharkNetException, SharkSecurityException {
         sharkNet = SharkNetEngine.createSharkNet("/Users/felixbrix/Documents/Studium/6. Semester/Entwicklung sozialer Anwendungen/SharkNetInterface/SharkNetAPI/db");
-        jsonHelper = new JSON();
+        jsonHelper = new JSONHelper();
     }
 
     /**
@@ -51,9 +50,9 @@ public class Profile extends HttpServlet {
                 new String[] { "https://github.com/fbrix", "http://brx-online.de" },
                 new String[] { "test@email.de", "tcp:test.de:7070" }
             );
-                        
-            SharkNetPeerProfile peerProfile = sharkNet.createPeerProfile(peerST);
             
+            SharkNetPeerProfile peerProfile = sharkNet.createPeerProfile(peerST);
+
             // Export profile as JSON string
             out.println(jsonHelper.convertToString(peerProfile));
         }
