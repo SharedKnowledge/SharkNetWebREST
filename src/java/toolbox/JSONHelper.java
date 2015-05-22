@@ -1,7 +1,9 @@
 package toolbox;
 
-import static java.lang.System.out;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
+import javax.servlet.http.HttpServletResponse;
 import net.sharkfw.apps.sharknet.SharkNetPeerProfile;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import org.json.*;
@@ -18,8 +20,9 @@ public class JSONHelper {
        body.put(key, value);
     }
     
-    public void render(SharkNetPeerProfile peerProfile) throws SharkKBException {
-        out.println(convertToString(peerProfile));
+    public void render(HttpServletResponse response, SharkNetPeerProfile peerProfile) throws SharkKBException, IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().println(convertToString(peerProfile));
     }
     
     public JSONObject convertToJson(SharkNetPeerProfile peerProfile) throws SharkKBException {        

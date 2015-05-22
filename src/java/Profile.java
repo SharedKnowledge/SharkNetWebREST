@@ -28,35 +28,7 @@ public class Profile extends HttpServlet {
         jsonHelper = new JSONHelper();
     }
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     * @throws net.sharkfw.knowledgeBase.SharkKBException
-     * @throws net.sharkfw.apps.sharknet.SharkNetException
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SharkKBException, SharkNetException {
-        response.setContentType("application/json;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            // Creates example profile
-            PeerSemanticTag peerST = sharkNet.createPeerSemanticTag(
-                "felix",
-                new String[] { "https://github.com/fbrix", "http://brx-online.de" },
-                new String[] { "test@email.de", "tcp:test.de:7070" }
-            );
-            
-            SharkNetPeerProfile peerProfile = sharkNet.createPeerProfile(peerST);
 
-            // Render profile as JSON string
-            jsonHelper.render(peerProfile);
-        }
-    }
     
     /**
      * TODO dummy test method
@@ -82,8 +54,20 @@ public class Profile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
-        } catch (SharkKBException | SharkNetException ex) {
+            
+            // Creates example profile
+            PeerSemanticTag peerST = sharkNet.createPeerSemanticTag(
+                "felix",
+                new String[] { "https://github.com/fbrix", "http://brx-online.de" },
+                new String[] { "test@email.de", "tcp:test.de:7070" }
+            );
+
+            SharkNetPeerProfile peerProfile = sharkNet.createPeerProfile(peerST);
+
+            // Render profile as JSON string
+            jsonHelper.render(response, peerProfile);
+            
+        } catch (SharkKBException ex) {
             Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -99,11 +83,6 @@ public class Profile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SharkKBException | SharkNetException ex) {
-            Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
