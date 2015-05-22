@@ -53,8 +53,8 @@ public class Profile extends HttpServlet {
             
             SharkNetPeerProfile peerProfile = sharkNet.createPeerProfile(peerST);
 
-            // Export profile as JSON string
-            out.println(jsonHelper.convertToString(peerProfile));
+            // Render profile as JSON string
+            jsonHelper.render(peerProfile);
         }
     }
     

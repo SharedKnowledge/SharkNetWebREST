@@ -1,5 +1,6 @@
 package toolbox;
 
+import static java.lang.System.out;
 import java.util.HashMap;
 import net.sharkfw.apps.sharknet.SharkNetPeerProfile;
 import net.sharkfw.knowledgeBase.SharkKBException;
@@ -15,6 +16,10 @@ public class JSONHelper {
     public JSONHelper(String key, Object value) {
        body = new HashMap<>();
        body.put(key, value);
+    }
+    
+    public void render(SharkNetPeerProfile peerProfile) throws SharkKBException {
+        out.println(convertToString(peerProfile));
     }
     
     public JSONObject convertToJson(SharkNetPeerProfile peerProfile) throws SharkKBException {        
