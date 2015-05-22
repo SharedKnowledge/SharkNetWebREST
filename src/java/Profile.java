@@ -28,19 +28,6 @@ public class Profile extends HttpServlet {
         jsonHelper = new JSONHelper();
     }
 
-
-    
-    /**
-     * TODO dummy test method
-     * @return peer profile
-     * @throws SharkKBException
-     */
-    private void postProfile(String name, String[] si, String[] addr) throws SharkKBException, SharkNetException, SharkSecurityException
-    {
-        PeerSemanticTag peerST = sharkNet.createPeerSemanticTag(name, si, addr);
-        sharkNet.createPeerProfile(peerST);
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
