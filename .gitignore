@@ -10,6 +10,8 @@ nbactions.xml
 nb-configuration.xml
 .nb-gradle/
 
+### SharkNet ###
+db/
 
 ### Java ###
 *.class
