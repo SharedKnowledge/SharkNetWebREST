@@ -1,32 +1,20 @@
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.sharkfw.apps.sharknet.SharkNet;
 import net.sharkfw.apps.sharknet.SharkNetException;
 import net.sharkfw.apps.sharknet.SharkNetPeerProfile;
-import net.sharkfw.apps.sharknet.j2se_android.SharkNetEngine;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
 
-import toolbox.*;
-
 @WebServlet(urlPatterns = {"/profile"})
-public class Profile extends HttpServlet {
-    
-    private final SharkNet sharkNet;
-    private final JSONHelper jsonHelper;
-    
-    public Profile() throws SharkKBException, SharkNetException, SharkSecurityException {
-        sharkNet = SharkNetEngine.createSharkNet("/Users/felixbrix/Documents/Studium/6. Semester/Entwicklung sozialer Anwendungen/SharkNetInterface/SharkNetAPI/db");
-        jsonHelper = new JSONHelper();
-    }
+public class Profile extends APIEndpoint {
+
+    public Profile() throws SharkKBException, SharkNetException, SharkSecurityException { }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
