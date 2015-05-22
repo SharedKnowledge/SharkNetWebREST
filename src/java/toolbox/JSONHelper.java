@@ -12,16 +12,17 @@ public class JSONHelper {
         contentType = "application/json;charset=UTF-8";
     }
     
+    public void render(HttpServletResponse response, JSONArray array) throws SharkKBException, IOException {
+        response.setContentType(contentType);
+        response.getWriter().println(array);
+    }
+    
     public void render(HttpServletResponse response, Object object) throws SharkKBException, IOException {
         response.setContentType(contentType);
-        response.getWriter().println(convertToString(object));
+        response.getWriter().println(convertToJson(object));
     }
     
     public JSONObject convertToJson(Object object) throws SharkKBException {        
         return new JSONObject(object);
-    }
-    
-    public String convertToString(Object object) throws SharkKBException {
-        return convertToJson(object).toString();
     }
 }
