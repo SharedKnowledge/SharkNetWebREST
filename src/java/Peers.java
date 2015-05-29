@@ -1,6 +1,4 @@
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -8,7 +6,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sharkfw.apps.sharknet.SharkNetException;
-import net.sharkfw.apps.sharknet.SharkNetPeerProfile;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
@@ -19,10 +16,10 @@ import org.json.JSONObject;
  *
  * @author felixbrix
  */
-@WebServlet(urlPatterns = {"/profiles"})
-public class Profiles extends APIEndpoint {
+@WebServlet(urlPatterns = {"/peers"})
+public class Peers extends APIEndpoint {
     
-    public Profiles() throws SharkKBException, SharkNetException, SharkSecurityException { }
+    public Peers() throws SharkKBException, SharkNetException, SharkSecurityException { }
     
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -49,19 +46,16 @@ public class Profiles extends APIEndpoint {
                     new String[] { "jan.de" },
                     new String[] { "jan@email.de" }
             );
-            
-            SharkNetPeerProfile peerProfile1 = sharkNet.createPeerProfile(peerST1);
-            SharkNetPeerProfile peerProfile2 = sharkNet.createPeerProfile(peerST2);
 
-            JSONArray profileList = new JSONArray();
-            profileList.put(new JSONObject(peerProfile1));
-            profileList.put(new JSONObject(peerProfile2));
+            JSONArray peerList = new JSONArray();
+            peerList.put(new JSONObject(peerST1));
+            peerList.put(new JSONObject(peerST2));
 
             // Render profiles as JSON string
-            jsonHelper.render(response, profileList);
+            jsonHelper.render(response, peerList);
             
         } catch (SharkKBException ex) {
-            Logger.getLogger(Profiles.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

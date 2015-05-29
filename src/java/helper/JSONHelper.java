@@ -13,12 +13,16 @@ public class JSONHelper {
     }
     
     public void render(HttpServletResponse response, JSONArray array) throws SharkKBException, IOException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setContentType(contentType);
+        
         response.getWriter().println(array);
     }
     
     public void render(HttpServletResponse response, Object object) throws SharkKBException, IOException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setContentType(contentType);
+        
         response.getWriter().println(convertToJson(object));
     }
     
