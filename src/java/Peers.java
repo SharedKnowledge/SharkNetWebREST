@@ -58,4 +58,20 @@ public class Peers extends APIEndpoint {
             Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // 1. Parameter entgegen nehmen: SI / [SI]
+        // 2. PeerSemanticTag erstellen in der aktullen KB
+        // 3. Success / Error response
+    }
 }

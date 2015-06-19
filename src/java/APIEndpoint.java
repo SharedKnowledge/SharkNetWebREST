@@ -22,7 +22,7 @@ class APIEndpoint extends HttpServlet {
     final JSONHelper jsonHelper;
     
     public APIEndpoint() throws SharkKBException, SharkNetException, SharkSecurityException {
-        sharkNet = SharkNetEngine.createSharkNet("/Users/felixbrix/Documents/Studium/6. Semester/Entwicklung sozialer Anwendungen/SharkNetInterface/SharkNetAPI/db");
+        sharkNet = SharkNetEngine.createSharkNet("db");
         jsonHelper = new JSONHelper();
     }
 }
