@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -61,7 +63,8 @@ public class Peers extends APIEndpoint {
     
     /**
      * Handles the HTTP <code>POST</code> method.
-     *
+     * Tested with curl -X POST http://localhost:8080/WEB-INF/peers 
+     * -d "name=aName&si[0]=si1&si[1]=si2&addresses=justOneAddress"
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -70,8 +73,79 @@ public class Peers extends APIEndpoint {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 1. Parameter entgegen nehmen: SI / [SI]
-        // 2. PeerSemanticTag erstellen in der aktullen KB
-        // 3. Success / Error response
+        
+        String name         = request.getParameter("name");
+        String[] si         = generateParamArray("si", request);
+        String[] addresses  = generateParamArray("addresses", request);
+        JSONArray peerList  = new JSONArray();
+        
+        if (si.length == 0 || addresses.length == 0) {
+            peerList.put(400);
+        } else {
+            JSONObject peer = generatePeer(name, si, addresses);
+            peerList.put(peer);
+        }
+        
+        try {
+            jsonHelper.render(response, peerList);
+        } catch (SharkKBException ex) {
+            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    /**
+     * Collects you an array of chosen parameter name
+     * @param paramName
+     * @param request
+     * @return 
+     */
+    protected String[] generateParamArray(String paramName, HttpServletRequest request)
+    {
+        List<String> params = new ArrayList<>();
+        String singleSI = request.getParameter(paramName);
+        
+        if (singleSI != null && !singleSI.isEmpty()) {
+            params.add(singleSI);
+        
+        } else {
+            String nextParam = request.getParameter(paramName+"[0]");
+            int i = 0;
+
+            while (nextParam != null && !nextParam.isEmpty()) {
+                params.add(nextParam);
+                i++;
+                nextParam = request.getParameter(paramName+"["+i+"]");
+            }
+        }
+        
+        String[] si = new String[params.size()];
+        si = params.toArray(si);
+        
+        return si;
+    }
+    
+    
+    /**
+     * 
+     * @param name
+     * @param si
+     * @param adresses
+     * @return 
+     */
+    protected JSONObject generatePeer(String name, String[] si, String[] adresses)
+    {
+        try {
+            PeerSemanticTag peerST1 = sharkNet.createPeerSemanticTag(
+                name,
+                si,
+                adresses
+            );    
+            return new JSONObject(peerST1);
+            
+        } catch (SharkKBException ex) {
+            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 }
