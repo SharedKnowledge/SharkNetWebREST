@@ -15,26 +15,49 @@ and open the template in the editor.
         
         <table>
             <tr>
-                <th>Name</th>
+                <th>Resource</th>
                 <th>Method</th>
                 <th>URI</th>
+                <th>comment</th>
+            </tr>
+            
+            <tr>
+                <td>owner</td>
+                <td>GET</td>
+                <td>/owner</td>
+                <td>requires previous POST</td>
+            </tr>
+            <tr>
+                <td>owner</td>
+                <td>POST</td>
+                <td>/owner</td>
+                <td>requires name, si and addresses. si and addresses be strings or arrays</td>
             </tr>
             
             <tr>
                 <td>peers</td>
                 <td>GET</td>
                 <td>/peers</td>
+                <td>Shark function missing</td>
+            </tr>
+            <tr>
+                <td>peers</td>
+                <td>GET</td>
+                <td>/peers/si=foo</td>
+                <td>multiple identifiers via si[0]=foo&si[1]=bar</td>
             </tr>
             <tr>
                 <td>peers</td>
                 <td>POST</td>
                 <td>/peers</td>
+                <td>requires name, si and addresses. si and addresses be strings or arrays</td>
             </tr>
             
             <tr>
-                <td>profile</td>
-                <td>GET</td>
-                <td>/profile/:name</td>
+                <td>profiles</td>
+                <td>todo</td>
+                <td>todo</td>
+                <td>todo</td>
             </tr>
         </table>
     </body>

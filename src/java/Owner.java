@@ -6,21 +6,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sharkfw.apps.sharknet.SharkNetException;
-import net.sharkfw.apps.sharknet.SharkNetPeerProfile;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
 
+
 /**
- * 
- * @author felixbrix
+ *
+ * @author Paul Kujawas
  */
-@WebServlet(urlPatterns = {"/profile/*"})
-public class Profile extends APIEndpoint {
-
-    public Profile() throws SharkKBException, SharkNetException, SharkSecurityException { }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+@WebServlet(urlPatterns = {"/owner"})
+public class Owner extends Basic {
+    
+    public Owner() throws SharkKBException, SharkNetException, SharkSecurityException { }
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -32,28 +31,19 @@ public class Profile extends APIEndpoint {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PeerSemanticTag kbOwner = sharkKB.getOwner();
+        
         try {
-            
-            // Creates example profile
-            PeerSemanticTag peerST = sharkNet.createPeerSemanticTag(
-                "felix",
-                new String[] { "https://github.com/fbrix", "http://brx-online.de" },
-                new String[] { "test@email.de", "tcp:test.de:7070" }
-            );
-
-            SharkNetPeerProfile peerProfile = sharkNet.createPeerProfile(peerST);
-
-            // Render profile as JSON string
-            jsonHelper.render(response, peerProfile);
-            
+            peerSTtoJSON(response, kbOwner, 424);
         } catch (SharkKBException ex) {
-            Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Owner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     /**
      * Handles the HTTP <code>POST</code> method.
-     *
+     * Tested with curl -X POST http://localhost:8080/SharkNetWebREST/user 
+     * -d "name=aName&si[0]=si1&si[1]=si2&addresses=justOneAddress"
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -62,6 +52,21 @@ public class Profile extends APIEndpoint {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // todo
+
+        String name             = request.getParameter("name");
+        String[] si             = generateParamArray("si", request);
+        String[] addresses      = generateParamArray("addresses", request);
+        PeerSemanticTag peerST  = createPeerST(name, si, addresses);
+        
+        try {
+            if (peerST == null) {
+                jsonHelper.renderError(response, 400);
+            } else {
+                sharkKB.setOwner(peerST);
+                jsonHelper.render(response, null);
+            }
+        } catch (SharkKBException ex) {
+            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
