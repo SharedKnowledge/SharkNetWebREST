@@ -44,19 +44,20 @@ public class JSONHelper {
         switch (ErrorCode) {
             case 400:
                 response.setHeader("Bad Request", "400");
-                JSONresponse.put( new JSONObject() );
+                JSONresponse.put(new JSONObject());
                 break;
             case 424:
                 response.setHeader("Failed Dependency", "424");
-                JSONresponse.put( new JSONObject() );
+                JSONresponse.put(new JSONObject());
                 break;
             default:
                 response.setHeader("Internal Server Error", "500");
-                JSONresponse.put( new JSONObject() );
+                JSONresponse.put(new JSONObject());
         }
         
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setContentType(contentType);
-        response.getWriter().println( convertToJson(JSONresponse) );
+        response.getWriter().println(convertToJson(JSONresponse));
     }
             
             

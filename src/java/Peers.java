@@ -30,17 +30,16 @@ public class Peers extends Basic {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String[] si = generateParamArray("si", request);
         
-        try {
+        try {    
             PeerSemanticTag peerST = sharkKB.getPeerSemanticTag(si);
-            peerSTtoJSON(response, peerST, 400);
+            peerSTtoJSON(response, peerST, 400);            
         } catch (SharkKBException ex) {
             Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
     
     /**
      * Works with name as string, si and addresses as string or arrays
@@ -61,6 +60,20 @@ public class Peers extends Basic {
         
         try {
             peerSTtoJSON(response, peerST, 400);
+        } catch (SharkKBException ex) {
+            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String si = request.getParameter("si");
+
+        try {
+            sharkKB.removeSemanticTag(sharkKB.getSemanticTag(si));
+            jsonHelper.render(response, si);
         } catch (SharkKBException ex) {
             Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
         }

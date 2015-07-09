@@ -28,6 +28,5 @@ class APIEndpoint extends HttpServlet {
         sharkNet = SharkNetEngine.createSharkNet("db");
         jsonHelper = new JSONHelper();
         sharkKB = new InMemoSharkKB();
-        
     }
 }
