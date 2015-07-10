@@ -55,7 +55,8 @@ public class Peers extends Basic {
         
         String name             = request.getParameter("name");
         String[] si             = generateParamArray("si", request);
-        String[] addresses      = generateParamArray("addresses", request);
+        String[] addresses      = generateParamArray("addresses", request);        
+        
         PeerSemanticTag peerST  = createPeerST(name, si, addresses);
         
         try {
@@ -66,7 +67,22 @@ public class Peers extends Basic {
     }
     
     @Override
-    protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    
+        String name      = request.getParameter("name");
+        String si        = request.getParameter("si");
+        String addresses = request.getParameter("addresses");
+        
+        /*
+            GET Peers mit SIs
+            prüfen ob null -> Fehler (nicht vorhanden)
+            else -> Überschreiben
+        */
+    }
+    
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     
         String si = request.getParameter("si");

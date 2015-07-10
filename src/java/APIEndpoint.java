@@ -7,6 +7,7 @@ import net.sharkfw.knowledgeBase.SharkKBException;;
 import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
 import net.sharkfw.system.SharkSecurityException;
 import helper.JSONHelper;
+import javax.servlet.http.HttpServletResponse;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
