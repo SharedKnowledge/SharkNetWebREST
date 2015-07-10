@@ -19,6 +19,9 @@ public class JSONHelper {
     
     public void render(HttpServletResponse response, JSONArray array) throws SharkKBException, IOException {
         response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        response.setHeader("Access-Control-Max-Age", "86400");
         response.setContentType(contentType);
         
         response.getWriter().println(array);
@@ -26,6 +29,9 @@ public class JSONHelper {
     
     public void render(HttpServletResponse response, Object object) throws SharkKBException, IOException {
         response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        response.setHeader("Access-Control-Max-Age", "86400");
         response.setContentType(contentType);
         
         response.getWriter().println(convertToJson(object));
@@ -56,6 +62,9 @@ public class JSONHelper {
         }
         
         response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        response.setHeader("Access-Control-Max-Age", "86400");
         response.setContentType(contentType);
         response.getWriter().println(convertToJson(JSONresponse));
     }

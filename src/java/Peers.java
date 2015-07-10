@@ -66,11 +66,11 @@ public class Peers extends Basic {
     }
     
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+    
         String si = request.getParameter("si");
-
+        
         try {
             sharkKB.removeSemanticTag(sharkKB.getSemanticTag(si));
             jsonHelper.render(response, si);
