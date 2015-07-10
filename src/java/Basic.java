@@ -71,7 +71,6 @@ abstract class Basic extends APIEndpoint{
         }
     }
     
-    
     /**
      * 
      * @param response
@@ -86,10 +85,7 @@ abstract class Basic extends APIEndpoint{
         if (peerST == null) {
             jsonHelper.renderError(response, possibleErrorCode);
         } else {
-            JSONObject jsonST  = new JSONObject(peerST);
-            JSONArray peerList = new JSONArray();
-            peerList.put(jsonST); // todo instead redirect to GET
-            jsonHelper.render(response, peerList);        
+            jsonHelper.render(response, peerST);        
         }
     }
 }
