@@ -1,3 +1,4 @@
+import helper.APIResponse;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,16 +10,15 @@ import net.sharkfw.apps.sharknet.SharkNetException;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
-
+import org.json.JSONObject;
 
 /**
  *
  * @author Paul Kujawas
  */
 @WebServlet(urlPatterns = {"/owner"})
-public class Owner extends Basic {
-    
-    public Owner() throws SharkKBException, SharkNetException, SharkSecurityException { }
+public class Owner extends Basic {    
+    public Owner() throws SharkKBException, SharkNetException, SharkSecurityException {}
     
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -30,11 +30,14 @@ public class Owner extends Basic {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        PeerSemanticTag kbOwner = sharkKB.getOwner();
-        
+    throws ServletException, IOException {
+        PeerSemanticTag kbOwner = sharkKB.getOwner(); 
         try {
-            peerSTtoJSON(response, kbOwner, 424);
+            if (kbOwner == null) {
+                APIResponse.render(response, 424);
+            } else {
+                APIResponse.render(response, new JSONObject(kbOwner));        
+            }
         } catch (SharkKBException ex) {
             Logger.getLogger(Owner.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -50,9 +53,8 @@ public class Owner extends Basic {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-
         String name             = request.getParameter("name");
         String[] si             = generateParamArray("si", request);
         String[] addresses      = generateParamArray("addresses", request);
@@ -60,10 +62,10 @@ public class Owner extends Basic {
         
         try {
             if (peerST == null) {
-                jsonHelper.renderError(response, 400);
+                APIResponse.render(response, 400);
             } else {
                 sharkKB.setOwner(peerST);
-                jsonHelper.render(response, null);
+                APIResponse.render(response, null);
             }
         } catch (SharkKBException ex) {
             Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);

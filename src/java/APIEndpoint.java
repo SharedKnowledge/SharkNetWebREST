@@ -6,8 +6,6 @@ import net.sharkfw.apps.sharknet.j2se_android.SharkNetEngine;
 import net.sharkfw.knowledgeBase.SharkKBException;;
 import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
 import net.sharkfw.system.SharkSecurityException;
-import helper.JSONHelper;
-import javax.servlet.http.HttpServletResponse;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,11 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 class APIEndpoint extends HttpServlet {
     final SharkNet sharkNet;
     final InMemoSharkKB sharkKB;
-    final JSONHelper jsonHelper;
     
     public APIEndpoint() throws SharkKBException, SharkNetException, SharkSecurityException {
         sharkNet = SharkNetEngine.createSharkNet("db");
-        jsonHelper = new JSONHelper();
         sharkKB = new InMemoSharkKB();
     }
 }

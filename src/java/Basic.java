@@ -1,16 +1,12 @@
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import net.sharkfw.apps.sharknet.SharkNetException;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -41,8 +37,7 @@ abstract class Basic extends APIEndpoint{
                 i++;
                 nextParam = request.getParameter(paramName+"["+i+"]");
             }
-        }
-        
+        }   
         String[] si = new String[params.size()];
         si = params.toArray(si);
         
@@ -68,24 +63,6 @@ abstract class Basic extends APIEndpoint{
         } catch (SharkKBException ex) {
             Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }
-    }
-    
-    /**
-     * 
-     * @param response
-     * @param peerST
-     * @param possibleErrorCode
-     * @throws SharkKBException
-     * @throws IOException 
-     */
-    protected void peerSTtoJSON(HttpServletResponse response, PeerSemanticTag peerST, int possibleErrorCode) 
-        throws SharkKBException, IOException
-    {
-        if (peerST == null) {
-            jsonHelper.renderError(response, possibleErrorCode);
-        } else {
-            jsonHelper.render(response, peerST);        
         }
     }
 }

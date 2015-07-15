@@ -1,3 +1,4 @@
+import helper.APIResponse;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,6 +10,7 @@ import net.sharkfw.apps.sharknet.SharkNetException;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
+import org.json.JSONObject;
 
 /**
  *
@@ -17,7 +19,6 @@ import net.sharkfw.system.SharkSecurityException;
  */
 @WebServlet(urlPatterns = {"/peers"})
 public class Peers extends Basic {
-    
     public Peers() throws SharkKBException, SharkNetException, SharkSecurityException { }
     
     /**
@@ -30,12 +31,16 @@ public class Peers extends Basic {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         String[] si = generateParamArray("si", request);
         
         try {    
             PeerSemanticTag peerST = sharkKB.getPeerSemanticTag(si);
-            peerSTtoJSON(response, peerST, 400);            
+            
+            if (peerST == null) {
+                APIResponse.render(response, 404);
+            } else {
+                APIResponse.render(response, new JSONObject(peerST));
+            }
         } catch (SharkKBException ex) {
             Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -50,21 +55,28 @@ public class Peers extends Basic {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {    
         String name             = request.getParameter("name");
         String[] si             = generateParamArray("si", request);
-        String[] addresses      = generateParamArray("addresses", request);        
-        
-        PeerSemanticTag peerST  = createPeerST(name, si, addresses);
-        
+        String[] addresses      = generateParamArray("addresses", request);
+    
+        PeerSemanticTag peerST = createPeerST(name, si, addresses);
         try {
-            peerSTtoJSON(response, peerST, 400);
+            if (peerST == null) {
+                APIResponse.render(response, 400);
+            } else {
+                PeerSemanticTag oldST = sharkKB.getPeerSemanticTag(si);
+                if (oldST != null) {
+                    peerST.merge(oldST);
+                }
+                APIResponse.render(response, new JSONObject(peerST));        
+            }
         } catch (SharkKBException ex) {
             Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
     
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
@@ -81,15 +93,15 @@ public class Peers extends Basic {
         */
     }
     
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
     
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         String si = request.getParameter("si");
         
         try {
             sharkKB.removeSemanticTag(sharkKB.getSemanticTag(si));
-            jsonHelper.render(response, si);
+            APIResponse.render(response, null);
         } catch (SharkKBException ex) {
             Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
         }
