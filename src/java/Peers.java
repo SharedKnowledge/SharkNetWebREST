@@ -1,6 +1,5 @@
 import helper.APIResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -23,7 +22,7 @@ public class Peers extends Basic {
     public Peers() throws SharkKBException, SharkNetException, SharkSecurityException { }
     
     /**
-     * Works with GET param si as string or array
+     * Tested with curl url?si=foo || curl url?si[0]=foo&si[1]=bar
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -50,6 +49,7 @@ public class Peers extends Basic {
     /**
      * Works with name as string, si and addresses as string or arrays
      * Tested with curl -X POST url -d "name=n&si[0]=s1&si[1]=s2&addresses=a"
+     * To create or update an entry
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -62,56 +62,30 @@ public class Peers extends Basic {
         String[] si         = generateParamArray("si", request);
         String[] addresses  = generateParamArray("addresses", request);
     
-        PeerSemanticTag peerST = createPeerST(name, si, addresses);
         try {
-            if (peerST == null) {
-                APIResponse.render(response, 400);
-            } else {
-                APIResponse.render(response, new JSONObject(peerST));        
+            PeerSemanticTag peerST = sharkKB.getPeerSemanticTag(si);
+            if (peerST != null) {
+                peerST.setName(name);
+                peerST.setAddresses(addresses);   
+            } else {    
+                peerST = createPeerST(name, si, addresses);
+                if (peerST == null) {
+                    APIResponse.render(response, 400);
+                }
             }
+            APIResponse.render(response, new JSONObject(peerST));
         } catch (SharkKBException ex) {
             Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
+    }   
     
     /**
-     * Tested with curl -X PUT url -d "name=n&si[0]=s1&si[1]=s2&addresses=a"
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Tested with curl -X DELETE url?si=foo
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
      */
-    @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String name         = request.getParameter("name");
-        String[] si         = generateParamArray("si", request);
-        String[] addresses  = generateParamArray("addresses", request);
-        
-        JSONObject f = new JSONObject();
-        f.put("null", name);
-        
-        try {
-          //  PeerSemanticTag oldST = sharkKB.getPeerSemanticTag(si);
-           // if (oldST == null) {
-            //    APIResponse.render(response, 404);
-            //} else {
-               // sharkKB.removeSemanticTag(oldST);
-                
-                // simply override all values, even same ones
-           //     peerST.setName(name);
-         //       peerST.setAddresses(addresses);
-                PeerSemanticTag peerST = createPeerST(name, si, addresses);
-
-                APIResponse.render(response, f); //new JSONObject(peerST));        
-           // }
-        } catch (SharkKBException ex) {
-            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
