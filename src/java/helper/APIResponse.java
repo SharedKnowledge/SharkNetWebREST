@@ -10,7 +10,7 @@ import org.json.*;
  * @author Paul Kujawa
  */
 public class APIResponse {
-    public static final String ctJSON = "\"application/json;charset=UTF-8\"";
+    public static final String ctJSON = "application/json;charset=UTF-8";
     
     /**
      * 
@@ -20,7 +20,7 @@ public class APIResponse {
      * @throws IOException 
      */
     public static void render(HttpServletResponse response, int ErrorCode) 
-    throws SharkKBException, IOException {   
+        throws SharkKBException, IOException {   
         response.setStatus(ErrorCode);
         render(response, null);
     }
@@ -33,7 +33,7 @@ public class APIResponse {
      * @throws IOException 
      */
     public static void render(HttpServletResponse response, JSONObject json) 
-    throws SharkKBException, IOException {   
+        throws SharkKBException, IOException {   
         response.setContentType(ctJSON);
         response.getWriter().println(json);
     }
