@@ -17,7 +17,7 @@ import org.json.JSONObject;
  * @author Paul Kujawas
  */
 @WebServlet(urlPatterns = {"/owner"})
-public class Owner extends Basic {    
+public class Owner extends APIEndpoint {    
     public Owner() throws SharkKBException, SharkNetException, SharkSecurityException {}
     
     /**
@@ -30,7 +30,7 @@ public class Owner extends Basic {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         PeerSemanticTag kbOwner = sharkKB.getOwner(); 
         try {
             if (kbOwner == null) {
@@ -68,7 +68,7 @@ public class Owner extends Basic {
                 APIResponse.render(response, null);
             }
         } catch (SharkKBException ex) {
-            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Peer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

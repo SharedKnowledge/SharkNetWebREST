@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sharkfw.apps.sharknet.SharkNetException;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
+import net.sharkfw.knowledgeBase.SemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.system.SharkSecurityException;
 import org.json.JSONObject;
@@ -18,8 +19,8 @@ import org.json.JSONObject;
  * @author Paul Kujawa
  */
 @WebServlet(urlPatterns = {"/peers"})
-public class Peers extends Basic {
-    public Peers() throws SharkKBException, SharkNetException, SharkSecurityException { }
+public class Peer extends APIEndpoint {
+    public Peer() throws SharkKBException, SharkNetException, SharkSecurityException { }
     
     /**
      * Tested with curl url?si=foo || curl url?si[0]=foo&si[1]=bar
@@ -42,7 +43,7 @@ public class Peers extends Basic {
                 APIResponse.render(response, new JSONObject(peerST));
             }
         } catch (SharkKBException ex) {
-            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Peer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -75,7 +76,7 @@ public class Peers extends Basic {
             }
             APIResponse.render(response, new JSONObject(peerST));
         } catch (SharkKBException ex) {
-            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Peer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }   
     
@@ -92,10 +93,15 @@ public class Peers extends Basic {
         String si = request.getParameter("si");
         
         try {
-            sharkKB.removeSemanticTag(sharkKB.getSemanticTag(si));
-            APIResponse.render(response, null);
+            SemanticTag peerST = sharkKB.getSemanticTag(si);
+             if (peerST == null) {
+                APIResponse.render(response, 404);
+            } else {
+                sharkKB.removeSemanticTag(peerST);
+                APIResponse.render(response, null);
+            }
         } catch (SharkKBException ex) {
-            Logger.getLogger(Peers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Peer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

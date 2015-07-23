@@ -9,9 +9,7 @@ import org.json.*;
  * 
  * @author Paul Kujawa
  */
-public class APIResponse {
-    public static final String ctJSON = "application/json;charset=UTF-8";
-    
+public class APIResponse {    
     /**
      * 
      * @param response
@@ -34,7 +32,7 @@ public class APIResponse {
      */
     public static void render(HttpServletResponse response, JSONObject json) 
         throws SharkKBException, IOException {   
-        response.setContentType(ctJSON);
+        response.setContentType("application/json;charset=UTF-8");
         response.getWriter().println(json);
     }
 }
